@@ -2,7 +2,7 @@
 * @Author: Daniel
 * @Date:   2017-04-10 09:50:44
 * @Last Modified by:   Daniel
-* @Last Modified time: 2017-04-10 11:38:56
+* @Last Modified time: 2017-04-10 11:53:04
 */
 
 #ifndef FEMTO_DST_READER_H
@@ -100,13 +100,18 @@ protected:
 
 		double m = lv.M();
 		double pt = lv.Pt();
+		double eta = lv.PseudoRapidity();
+		double phi = lv.Phi();
 
 		book->fill( prefix + "mc_pT_mass", m, pt );
+		book->fill( prefix + "mc_eta_phi", phi, eta );
 		if ( nullptr != tc1._track && nullptr != tc2._track ){
 			book->fill( prefix + "rc_pT_mass", m, pt );
+			book->fill( prefix + "rc_eta_phi", phi, eta );
 
 			if ( nullptr != tc1._mtdPid && nullptr != tc2._mtdPid ){
 				book->fill( prefix + "mtd_pT_mass", m, pt );
+				book->fill( prefix + "mtd_eta_phi", phi, eta );
 			} // both MTD
 		} // both RC
 	}

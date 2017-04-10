@@ -1,0 +1,203 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<root>
+	
+	<Data name="histos" url="data.root" />
+	<TFile url="data_projections.root" />
+
+	<TCanvas width="1000" height="700" />
+	<Margins> 0.02, 0.02, 0.15, 0.1</Margins>
+
+	<pT1>0.0</pT1>
+	<pT2>4.0</pT2>
+
+	<Transform states=", lsp_, lsn_">
+		<ProjectionX save_as="{state}mc_mass" name="histos/{state}mc_pT_mass" y1="{pT1}" y2="{pT2}" />
+		<ProjectionX save_as="{state}rc_mass" name="histos/{state}rc_pT_mass" y1="{pT1}" y2="{pT2}" />
+		<ProjectionX save_as="{state}mtd_mass" name="histos/{state}mtd_pT_mass" y1="{pT1}" y2="{pT2}" />
+
+		<ProjectionY save_as="{state}mc_pT" name="histos/{state}mc_pT_mass" x1="0" x2="10" />
+		<ProjectionY save_as="{state}rc_pT" name="histos/{state}rc_pT_mass" x1="0" x2="10" />
+		<ProjectionY save_as="{state}mtd_pT" name="histos/{state}mtd_pT_mass" x1="0" x2="10" />
+
+
+		<ProjectionX save_as="{state}mc_phi" name="histos/{state}mc_eta_phi" y1="-4" y2="4" />
+		<ProjectionX save_as="{state}rc_phi" name="histos/{state}rc_eta_phi" y1="-4" y2="4" />
+		<ProjectionX save_as="{state}mtd_phi" name="histos/{state}mtd_eta_phi" y1="-4" y2="4" />
+
+		<ProjectionY save_as="{state}mc_eta" name="histos/{state}mc_eta_phi" x1="-4" x2="4" />
+		<ProjectionY save_as="{state}rc_eta" name="histos/{state}rc_eta_phi" x1="-4" x2="4" />
+		<ProjectionY save_as="{state}mtd_eta" name="histos/{state}mtd_eta_phi" x1="-4" x2="4" />
+
+	</Transform>
+
+	<Transform states="mc, rc, mtd">
+		<Add save_as="ls_{state}_mass" nameA="lsp_{state}_mass" nameB="lsn_{state}_mass" />
+		<Add save_as="ls_{state}_pT" nameA="lsp_{state}_pT" nameB="lsn_{state}_pT" />
+		<Add save_as="ls_{state}_eta" nameA="lsp_{state}_eta" nameB="lsn_{state}_eta" />
+		<Add save_as="ls_{state}_phi" nameA="lsp_{state}_phi" nameB="lsn_{state}_phi" />
+	</Transform>
+
+	<Transform states="mc, rc, mtd" >
+		<Scale save_as="ls_{state}_mass" name="ls_{state}_mass" factor="1.25" />
+	</Transform>
+
+	<Transform states="" >
+		<Divide save_as="rc_over_mc_mass" nameA="rc_mass" nameB="mc_mass" />
+		<Divide save_as="mtd_over_mc_mass" nameA="mtd_mass" nameB="mc_mass" />
+		<Divide save_as="mtd_over_rc_mass" nameA="mtd_mass" nameB="rc_mass" />
+
+		<Divide save_as="rc_over_mc_pT" nameA="rc_pT" nameB="mc_pT" />
+		<Divide save_as="mtd_over_mc_pT" nameA="mtd_pT" nameB="mc_pT" />
+		<Divide save_as="mtd_over_rc_pT" nameA="mtd_pT" nameB="rc_pT" />
+
+		<Divide save_as="ls_rc_over_mc_mass" nameA="ls_rc_mass" nameB="ls_mc_mass" />
+		<Divide save_as="ls_mtd_over_mc_mass" nameA="ls_mtd_mass" nameB="ls_mc_mass" />
+		<Divide save_as="ls_mtd_over_rc_mass" nameA="ls_mtd_mass" nameB="ls_rc_mass" />
+
+		<Divide save_as="ls_rc_over_mc_pT" nameA="ls_rc_pT" nameB="ls_mc_pT" />
+		<Divide save_as="ls_mtd_over_mc_pT" nameA="ls_mtd_pT" nameB="ls_mc_pT" />
+		<Divide save_as="ls_mtd_over_rc_pT" nameA="ls_mtd_pT" nameB="ls_rc_pT" />
+	</Transform>
+
+
+
+	<PlotTemplate names="mc, rc, mtd">
+		<Histo name="{name}_mass" style="style.common" >
+			<style draw="" title="(+-)" y="dN/dM_{#mu#mu} (GeV/c^{2})^{-1}"/>
+		</Histo>
+		<Export url="Export/{name}_mass.png" />
+	</PlotTemplate>
+
+	<Plot>
+		<Histo name="mc_mass" style="style.common" >
+			<style draw="" linecolor="#000000" logy="1" min="1" title="(+-)" y="dN/dM_{#mu#mu} (GeV/c^{2})^{-1}"/>
+		</Histo>
+		<Histo name="rc_mass" style="style.common" >
+			<style draw="same" linecolor="#ff0000"/>
+		</Histo>
+		<Histo name="mtd_mass" style="style.common" >
+			<style draw="same" linecolor="#0000ff"/>
+		</Histo>
+
+		<Legend columns="3">
+			<Position pos="bottom center" w="0.4" h="0.1"/>
+			<Entry name="mc_mass" title="MC" opt="l" />
+			<Entry name="rc_mass" title="RC" opt="l" />
+			<Entry name="mtd_mass" title="MTD" opt="l" />
+		</Legend>
+
+
+		<Export url="Export/mass.pdf" />
+	</Plot>
+
+
+	<PlotTemplate names="mc, rc, mtd">
+		<Histo name="ls_{name}_mass" style="style.common" >
+			<style draw="" title="(+-)" y="dN/dM_{#mu#mu} (GeV/c^{2})^{-1}"/>
+		</Histo>
+		<Export url="Export/ls_{name}_mass.png" />
+	</PlotTemplate>
+
+	<Plot>
+		<Histo name="ls_mc_mass" style="style.common" >
+			<style draw="" linecolor="#000000" logy="1" min="1" title="(+-)" y="dN/dM_{#mu#mu} (GeV/c^{2})^{-1}"/>
+		</Histo>
+		<Histo name="ls_rc_mass" style="style.common" >
+			<style draw="same" linecolor="#ff0000"/>
+		</Histo>
+		<Histo name="ls_mtd_mass" style="style.common" >
+			<style draw="same" linecolor="#0000ff"/>
+		</Histo>
+
+		<Legend columns="3">
+			<Position pos="bottom center" w="0.4" h="0.1"/>
+			<Entry name="ls_mc_mass" title="MC" opt="l" />
+			<Entry name="ls_rc_mass" title="RC" opt="l" />
+			<Entry name="ls_mtd_mass" title="MTD" opt="l" />
+		</Legend>
+
+
+		<Export url="Export/ls_mass.pdf" />
+	</Plot>
+
+	<PlotTemplate names="mc, rc, mtd">
+		<Histo name="{name}_mass" style="style.common" >
+			<style draw="" title="(+-)" y="dN/dM_{#mu#mu} (GeV/c^{2})^{-1}" linecolor="#000000"/>
+		</Histo>
+
+		<Histo name="ls_{name}_mass" style="style.common" >
+			<style draw="same" linecolor="#ff0000" />
+		</Histo>
+		<Export url="Export/ls_and_uls_{name}_mass.png" />
+	</PlotTemplate>
+
+	<Plot>
+		<Histo name="rc_over_mc_mass" style="style.common" >
+			<style linecolor="#ff0000" yr="0.8, 0.95" />
+		</Histo>
+		<Export url="Export/rc_over_mc_mass.pdf" />
+	</Plot>
+
+	<PlotTemplate names="mtd_over_mc, mtd_over_rc">
+		<Histo name="{name}_mass" style="style.common" >
+			<style linecolor="#ff0000" logy="0" yr="0.0, 0.1"/>
+		</Histo>
+		<Export url="Export/{name}_mass.pdf" />
+	</PlotTemplate>
+
+
+	<PlotTemplate names="ls_mc, ls_rc, ls_mtd">
+		<Histo name="{name}_mass" style="style.common" >
+			<style draw="" title="(+-)" y="dN/dM_{#mu#mu} (GeV/c^{2})^{-1}" linecolor="#000000"/>
+		</Histo>
+
+		<Histo name="ls_{name}_mass" style="style.common" >
+			<style draw="same" linecolor="#ff0000" />
+		</Histo>
+		<Export url="Export/ls_and_uls_{name}_mass.png" />
+	</PlotTemplate>
+
+	<Plot>
+		<Histo name="ls_rc_over_mc_mass" style="style.common" >
+			<style linecolor="#ff0000" yr="0.8, 0.95" />
+		</Histo>
+		<Export url="Export/rc_over_mc_mass.pdf" />
+	</Plot>
+
+	<PlotTemplate names="ls_mtd_over_mc, ls_mtd_over_rc">
+		<Histo name="{name}_mass" style="style.common" >
+			<style linecolor="#ff0000" logy="0" yr="0.0, 0.1"/>
+		</Histo>
+		<Export url="Export/{name}_mass.pdf" />
+	</PlotTemplate>
+
+
+
+	<PlotTemplate names="mtd_over_mc, mtd_over_rc">
+		<Histo name="{name}_mass" style="style.common" >
+			<style linecolor="#000000" logy="0" yr="0.0, 0.1"/>
+		</Histo>
+
+		<Histo name="ls_{name}_mass" style="style.common" >
+			<style draw="same" linecolor="#ff0000" logy="0" yr="0.0, 0.1"/>
+		</Histo>
+
+		<Export url="Export/{name}_mass.pdf" />
+
+		<Legend columns="2">
+			<Position pos="top center" h="0.1" />
+			<Entry name="{name}_mass" title="(+-)" />
+			<Entry name="ls_{name}_mass" title="(+-)" />
+		</Legend>
+
+		<TLatex x="0.3" y="0.82" text="{pT1} < p_{T} < {pT2} (GeV/c)" />
+
+	</PlotTemplate>
+
+
+	<style>
+		<common titlexy="0.2, 0.96" linewidth="2" optstat="0"/>
+	</style>
+
+
+</root>
