@@ -1,0 +1,7 @@
+#!/bin/bash
+
+cd ../
+scons -c
+scons -j8 ll=20
+cd bin
+cp app prod
